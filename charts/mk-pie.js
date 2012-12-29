@@ -25,6 +25,7 @@
             sort        : null,
             value       : function (d) { return d.votes; }
         };
+        this.$element = d3.select(element);
 
         if ( options ) {
             for ( op in options ) {
@@ -51,7 +52,7 @@
             .value(this.options.value);
 
         // canvas
-        this.canvas = d3.select(element).append('svg')
+        this.canvas = this.$element.append('svg')
             .attr('width', this.options.width)
             .attr('height', this.options.height)
             .style('position', 'relative')
@@ -77,7 +78,6 @@
                 .classed('good', function(d) { return classes[d.data.type] == 'good'; })
                 .classed('bad', function(d) { return classes[d.data.type] == 'bad'; })
                 .classed('no-vote', function(d) { return classes[d.data.type] == 'no-vote'; });
-
             return this;
         }
     };
