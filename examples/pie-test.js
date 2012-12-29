@@ -1,4 +1,9 @@
-require([
+requirejs.config({
+    paths   : {
+        d3  : '../lib/d3'
+    }
+});
+requirejs([
     '../charts/mk-pie'
 ], function (MKPieChart) {
     var testdata = [{
