@@ -1,6 +1,13 @@
-define([
-    '../lib/d3'
-], function () {
+(function (root, factory) {
+    if ( typeof define === 'function' && define.amd ) {
+        define(['d3'], function () {
+            return factory(root);
+        });
+    } else {
+        // if not using an AMD library set the global `uijet` namespace
+        root.MKPieChart = factory(root);
+    }
+}(this, function () {
     function MKPieChart (element, options) {
         var op;
 
@@ -63,4 +70,4 @@ define([
     };
 
     return MKPieChart;
-});
+}));
