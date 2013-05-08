@@ -17,10 +17,17 @@
             padding     : 10,
             line_width  : 5,
             radius      : 300 / 2,
-            classes     : {
-                yes     : 'good',
-                no      : 'bad',
-                didnt   : 'no-vote'
+//            classes     : {
+//                'for'       : 'good',
+//                against     : 'bad',
+//                'abstain'   : 'neutral',
+//                'no-vote'   : 'no-vote'
+//            },
+            colors      : {
+                'for'       : '#3ac8a8', // goodColor
+                against     : '#ec6752', // badColor
+                'abstain'   : '#a9a6a6',
+                'noVote'   : 'transparent'
             },
             sort        : null,
             value       : function (d) { return d.votes; }
@@ -43,23 +50,23 @@
 
         // arc object definition
         this.arc = d3.svg.arc()
-            .outerRadius(this.options.radius - this.options.padding + line_width_factor)
-            .innerRadius(this.options.radius - this.options.padding - line_width_factor);
+                        .outerRadius(this.options.radius - this.options.padding + line_width_factor)
+                        .innerRadius(this.options.radius - this.options.padding - line_width_factor);
 
         // pie layout
         this.pie = d3.layout.pie()
-            .sort(this.options.sort)
-            .value(this.options.value);
+                        .sort(this.options.sort)
+                        .value(this.options.value);
 
         // canvas
         this.canvas = this.$element.append('svg')
-            .attr('width', this.options.width)
-            .attr('height', this.options.height)
-            .style('position', 'relative')
-            .style('top', -line_width_factor + 'px')
-            .style('left', line_width_factor + 'px')
-            .append('g')
-            .attr('transform', 'translate(' + this.options.width / 2 + ',' + this.options.height / 2 + ')');
+                .attr('width', this.options.width)
+                .attr('height', this.options.height)
+                .style('position', 'absolute')
+                .style('top', -line_width_factor + 'px')
+                .style('left', -line_width_factor + 'px')
+                .append('g')
+                    .attr('transform', 'translate(' + this.options.width / 2 + ',' + this.options.height / 2 + ')');
     }
 
     MKPieChart.prototype = {
@@ -67,17 +74,15 @@
         render      : function (data) {
             // arc containers
             var g = this.canvas.selectAll('.arc')
-                    .data(this.pie(data))
-                    .enter().append('g')
-                    .attr('class', 'arc'),
-                classes = this.options.classes;
+                                .data(this.pie(data))
+                                .enter().append('g')
+                                .attr('class', 'arc'),
+                colors = this.options.colors;
 
             // arcs
             g.append('path')
                 .attr('d', this.arc)
-                .classed('good', function(d) { return classes[d.data.type] == 'good'; })
-                .classed('bad', function(d) { return classes[d.data.type] == 'bad'; })
-                .classed('no-vote', function(d) { return classes[d.data.type] == 'no-vote'; });
+                .style('fill', function(d) { return colors[d.data.type]; });
             return this;
         }
     };
